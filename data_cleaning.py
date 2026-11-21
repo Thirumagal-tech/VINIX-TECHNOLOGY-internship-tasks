@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data = pd.read_csv(r"C:\Users\Admin\Downloads\daily.csv")
+print(data)
+null_values = data.isnull().sum()
+print("\nMissing values:")
+print(null_values)
+print("\nFirst 5 rows:")
+print(data.head())
+print("\nShape of data:")
+print(data.shape)
+print("\nInformation:")
+data.info()
+print("\nDuplicate data:")
+print(data.duplicated().sum())
+data = data.drop_duplicates()
+data.columns = data.columns.str.strip()
+print("\nColumn names:")
+print(data.columns)
+text_columns = data.select_dtypes(include="str").columns
+print("\nSelected text columns:")
+print(text_columns)
+for column in text_columns:
+    data[column] = data[column].str.strip()
+print("\nText columns cleaned successfully!")
+data["country"] = data["country"].fillna("Unknown")
+data["countries"] = data["countries"].fillna("Unknown")
+data["also_in"] = data["also_in"].fillna("Not Available")
+data["date"] = pd.to_datetime(data["date"], errors="coerce")
+print("\nMissing values after cleaning:")
+print(data.isnull().sum())
+print("\nCleaned dataset:")
+print(data.head())
+print("\nShape after cleaning:")
+print(data.shape)
+data.to_csv("cleaned_daily.csv", index=False)
+print("Dataset cleaned successfully!")
+
+
